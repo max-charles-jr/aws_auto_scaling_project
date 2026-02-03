@@ -35,7 +35,7 @@ data "aws_subnets" "public" {
 
 # Module invocation
 module "web_asg" {
-  source = "../../modules/web-asg"
+  source = "./modules/web-asg"
 
   environment         = "dev"
   project_name        = var.project_name
