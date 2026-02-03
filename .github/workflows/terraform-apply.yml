@@ -7,17 +7,23 @@ on:
     paths:
       - 'terraform/iac/**'
       - '.github/workflows/terraform-*.yml'
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - staging
-          - prod
+
+  workflow_run:
+    workflows: ["Terraform Plan"]  # This must match the name of the first workflow
+    types:
+      - completed      
+
+  # workflow_dispatch:
+  #   inputs:
+  #     environment:
+  #       description: 'Environment to deploy'
+  #       required: true
+  #       default: 'dev'
+  #       type: choice
+  #       options:
+  #         - dev
+  #         - staging
+  #         - prod
 
 permissions:
   id-token: write
