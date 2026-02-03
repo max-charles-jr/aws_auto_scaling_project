@@ -1,18 +1,20 @@
 #!/bin/bash
 
+BUCKETNAME=mcharles-merck-sandbox-bucket-dev
+
 # Create S3 bucket for state
 aws s3api create-bucket \
-  --bucket your-terraform-state-bucket-dev \
+  --bucket $BUCKETNAME \
   --region us-east-1
 
 # Enable versioning
 aws s3api put-bucket-versioning \
-  --bucket your-terraform-state-bucket-dev \
+  --bucket $BUCKETNAME \
   --versioning-configuration Status=Enabled
 
 # Enable encryption
 aws s3api put-bucket-encryption \
-  --bucket your-terraform-state-bucket-dev \
+  --bucket $BUCKETNAME \
   --server-side-encryption-configuration '{
     "Rules": [{
       "ApplyServerSideEncryptionByDefault": {
