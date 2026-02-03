@@ -2,8 +2,8 @@ name: Terraform Apply
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     paths:
       - 'terraform/iac/**'
       - '.github/workflows/terraform-*.yml'
