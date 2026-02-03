@@ -6,9 +6,16 @@ resource "aws_lb" "web_alb" {
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = var.public_subnet_ids
 
-  enable_deletion_protection       = false
+  enable_deletion_protection       = true
   enable_http2                     = true
   enable_cross_zone_load_balancing = true
+  drop_invalid_header_fields = true
+
+  access_logs {
+    bucket = "mcharles-merck-sandbox-bucket-dev"
+    enabled = true
+    prefix = "access-logs"
+  }
 
   tags = merge(
     var.tags,
@@ -51,7 +58,7 @@ resource "aws_lb_target_group" "web_tg" {
 resource "aws_lb_listener" "web_listener" {
   load_balancer_arn = aws_lb.web_alb.arn
   port              = "80"
-  protocol          = "HTTP"
+  protocol          = "HTTPS"
 
   default_action {
     type             = "forward"
