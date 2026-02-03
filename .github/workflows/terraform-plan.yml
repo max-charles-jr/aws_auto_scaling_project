@@ -6,7 +6,7 @@ on:
       - main
       - develop
     paths:
-      - 'terraform/**'
+      - 'terraform/iac/**'
       - '.github/workflows/terraform-*.yml'
 
 permissions:
@@ -30,7 +30,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'config'
-          scan-ref: 'terraform/'
+          scan-ref: 'terraform/iac/'
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH,MEDIUM'
@@ -46,7 +46,7 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
-          directory: terraform/
+          directory: terraform/iac/
           framework: terraform
           output_format: cli
           soft_fail: true
@@ -59,26 +59,26 @@ jobs:
 
       - name: Initialize TFLint
         run: tflint --init
-        working-directory: terraform/
+        working-directory: terraform/iac/
 
       - name: Run TFLint
         run: tflint -f compact
-        working-directory: terraform/
+        working-directory: terraform/iac/
 
       - name: Run tfsec
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
-          working_directory: terraform/
+          working_directory: terraform/iac/
           soft_fail: true
 
   terraform-plan:
     name: Terraform Plan - Dev
     runs-on: ubuntu-latest
     needs: security-scan
-    environment: dev
+    #environment: dev
     defaults:
       run:
-        working-directory: terraform/environments/dev
+        working-directory: terraform/iac
 
     steps:
       - name: Checkout code
