@@ -23,29 +23,34 @@ provider "aws" {
 
 # Use default VPC for dev (replace with your VPC module in production)
 data "aws_vpc" "default" {
-  default = true
+  default = false
+  id      = "vpc-07a6d1131efa2eb5e"
 }
 
-data "aws_subnets" "public" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
+# data "aws_subnets" "public" {
+#   filter {
+#     name   = "vpc-id"
+#     values = [data.aws_vpc.default.id]
+#   }
+# }
+
+# data "aws_subnet" "public" {
+#   for_each = to
+# }
 
 # Module invocation
 module "web_asg" {
   source = "./modules/web-asg"
 
-  environment         = "dev"
-  project_name        = var.project_name
-  vpc_id              = data.aws_vpc.default.id
-  public_subnet_ids   = data.aws_subnets.public.ids
-  private_subnet_ids  = data.aws_subnets.public.ids # Using public for dev
-  instance_type       = var.instance_type
-  desired_capacity    = var.desired_capacity
-  min_size            = var.min_size
-  max_size            = var.max_size
+  environment        = "dev"
+  project_name       = var.project_name
+  vpc_id             = var.vpc_id
+  public_subnet_ids  = var.public_subnet_ids
+  private_subnet_ids = var.private_subnet_ids
+  instance_type      = var.instance_type
+  desired_capacity   = var.desired_capacity
+  min_size           = var.min_size
+  max_size           = var.max_size
 
   tags = {
     CostCenter = "Engineering"
