@@ -9,7 +9,7 @@ on:
     branches:
       - develop
       - main
-          
+
     paths:
       - 'terraform/iac/**'
       - '.github/workflows/terraform-*.yml'
@@ -30,6 +30,7 @@ permissions:
   id-token: write
   contents: read
   pull-requests: write
+  security-events: write  
 
 env:
   AWS_REGION: us-east-1
